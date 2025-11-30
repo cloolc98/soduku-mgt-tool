@@ -1,0 +1,17 @@
+<section class="p-4 bg-gray-50 rounded-lg border border-gray-200">
+    <h2 class="font-bold text-lg mb-2 text-purple-700">Generator</h2>
+    <div class="flex items-center gap-2 mb-3">
+        <label class="text-sm font-medium">Difficulty:</label>
+        <select class="border rounded p-1 text-sm bg-white" (change)="difficulty.set($any($event.target).value)">
+          <option value="Easy">Easy</option>
+          <option value="Medium" selected>Medium</option>
+          <option value="Hard">Hard</option>
+          <option value="Samurai">Samurai</option> 
+        </select>
+    </div>
+    <button 
+        (click)="generate()" 
+        class="w-full py-2 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded transition shadow-md">
+        Generate Sudoku
+    </button>
+</section>

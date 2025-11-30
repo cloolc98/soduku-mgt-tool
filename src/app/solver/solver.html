@@ -1,0 +1,28 @@
+<section class="p-4 bg-gray-50 rounded-lg border border-gray-200 flex-1">
+    <h2 class="font-bold text-lg mb-2 text-green-700">Solver</h2>
+    <button 
+        (click)="solve()" 
+        [disabled]="!board()"
+        class="w-full py-2 bg-green-600 hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold rounded transition shadow-md mb-3">
+        Solve
+    </button>
+
+    @if (result()) {
+        <div class="text-sm border-t pt-2 mt-2">
+          <p><strong>Solutions Found:</strong> {{ result()?.count }}</p>
+          <p><strong>Uniqueness:</strong> 
+            <span [class.text-green-600]="result()?.unique" [class.text-red-600]="!result()?.unique">
+              {{ result()?.unique ? 'Unique' : 'Multiple/None' }}
+            </span>
+          </p>
+          <p><strong>Difficulty Est:</strong> {{ result()?.difficulty }}</p>
+          <p class="text-xs text-gray-500 mt-1">(Clues: {{ result()?.clues }}, Steps: {{ result()?.steps }})</p>
+          <button (click)="toggle()" class="mt-2 text-blue-600 hover:underline text-xs">
+            {{ isVisible() ? 'Hide Solution' : 'Show Solution' }}
+          </button>
+        </div>
+    }
+    @if (error()) {
+        <div class="mt-2 text-red-600 text-sm">{{ error() }}</div>
+    }
+</section>

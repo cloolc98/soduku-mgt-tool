@@ -1,0 +1,47 @@
+<div class="min-h-screen bg-gray-100 font-sans text-gray-800 py-8 px-4 flex flex-col items-center">
+      
+      <app-header></app-header>
+
+      <div class="bg-white p-6 rounded-xl shadow-xl w-full max-w-4xl flex flex-col lg:flex-row gap-8">
+        
+        <div class="flex-1 flex flex-col gap-6">
+          <app-reader (boardLoaded)="onBoardLoad($event)"></app-reader>
+          <app-generator (boardGenerated)="onBoardLoad($event)"></app-generator>
+          <app-solver [board]="board()" 
+                      (solutionUpdate)="onSolutionCalculated($event)"
+                      (visibilityToggle)="onVisibilityChange($event)">
+          </app-solver>
+        </div>
+
+        <!-- The Board Display -->
+        <div class="flex-none flex justify-center items-start">
+          @if (board()) {
+            <div class="relative bg-black border-4 border-black grid grid-cols-9 gap-px shadow-2xl">
+              @for (row of displayBoard(); track $index; let r = $index) {
+                @for (cell of row; track $index; let c = $index) {
+                  <div class="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center text-xl bg-white select-none transition-colors"
+                       [class.font-bold]="cell.isFixed"
+                       [class.text-blue-600]="!cell.isFixed && cell.value !== 0"
+                       [class.bg-blue-50]="showSolution() && !cell.isFixed && cell.value !== 0">
+                    {{ cell.value !== 0 ? cell.value : '' }}
+                  </div>
+                }
+              }
+            </div>
+          } @else {
+            <div class="w-80 h-80 sm:w-96 sm:h-96 border-2 border-dashed border-gray-300 rounded flex items-center justify-center text-gray-400">
+              No Board Loaded
+            </div>
+          }
+        </div>
+      </div>
+      
+      <!-- Console Log Output -->
+      @if (consoleOutput()) {
+        <div class="w-full max-w-4xl mt-6 p-4 bg-gray-900 text-green-400 rounded-lg font-mono text-xs overflow-x-auto shadow-inner">
+          <div class="font-bold border-b border-gray-700 mb-2 pb-1">Console Output</div>
+          <pre>{{ consoleOutput() }}</pre>
+        </div>
+      }
+
+    </div>
