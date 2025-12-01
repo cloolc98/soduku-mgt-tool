@@ -1,0 +1,11 @@
+services:
+  sodukumgttool:
+    image: sodukumgttool
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    environment:
+      NODE_ENV: production
+      PORT: ${CONTAINER_PORT:-10000}
+    ports:
+      - "${HOST_IP:-0.0.0.0}:${HOST_PORT:-10000}:${CONTAINER_PORT:-10000}"
