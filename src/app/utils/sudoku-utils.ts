@@ -2,7 +2,7 @@ import { SudokuBoard, Cell } from "../model/cell";
 
 export class SudokuUtils {
     static parse(text: string): SudokuBoard {
-    const lines = text.split(/\r\n|\n|\r/).map(l => l.trim()).filter(l => l);
+    const lines = text.split(/\r\n|\n|\r/).map(l => l.trim()).filter(l => l); // eg: "53..7.... \r\n6..195...\n\n"
     if (lines.length !== 9) throw new Error(`Invalid file: Found ${lines.length} rows.`);
 
     return lines.map((line, r) => {
@@ -21,17 +21,23 @@ export class SudokuUtils {
   }
 
   static findAllSolutions(grid: number[][], results: number[][][], limit: number, stats: { steps: number }): void {
+    // A process of recursive backtracking 
+
     stats.steps++;
+    // Check uniqueness of solutions
     if (results.length >= limit) return;
 
+    // Check empty cells, if none, we say there is a solution.
     const empty = this.findEmpty(grid);
     if (!empty) {
       results.push(grid.map(r => [...r]));
       return;
     }
 
+    // Fill the empty cell
     const [r, c] = empty;
     for (let num = 1; num <= 9; num++) {
+      // if current digit fits the cell legally in a Sudoku
       if (this.isValid(grid, r, c, num)) {
         grid[r][c] = num;
         this.findAllSolutions(grid, results, limit, stats);

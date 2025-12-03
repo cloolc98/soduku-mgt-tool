@@ -15,6 +15,8 @@ export class Generator {
   difficulty = signal<Difficulty>('Medium');
 
   generate() {
+    // A process of Digging Holes
+
     let grid = Array(9).fill(0).map(() => Array(9).fill(0));
     
     // Fill diagonal boxes
@@ -34,11 +36,15 @@ export class Generator {
     SudokuUtils.findAllSolutions(grid, solutions, 1, { steps: 0 });
     grid = solutions[0];
 
-    // Remove digits
-    let targetClues = { 'Easy': 32, 'Medium': 27, 'Hard': 25, 'Samurai': 24 }[this.difficulty()];
+    // Remove digits (dig holes)
+    let targetClues = { 'Easy': 32, 'Medium': 28, 'Hard': 26, 'Samurai': 24 }[this.difficulty()]; // thresholds updated but still have issues in generation
     let clues = 81;
     let coords = [];
-    for(let r=0; r<9; r++) for(let c=0; c<9; c++) coords.push([r,c]);
+    for(let r=0; r<9; r++){
+      for(let c=0; c<9; c++){
+        coords.push([r,c]);
+      }
+    }  
     coords.sort(() => Math.random() - 0.5);
 
     for (let [r, c] of coords) {
@@ -51,6 +57,7 @@ export class Generator {
       grid[r][c] = 0;
       grid[8-r][8-c] = 0;
 
+      // Uniqueness check
       const check: number[][][] = [];
       SudokuUtils.findAllSolutions(grid.map(row=>[...row]), check, 2, { steps: 0 });
       
@@ -68,7 +75,13 @@ export class Generator {
   }
 
   private isSafeBox(grid: number[][], startRow: number, startCol: number, num: number) {
-    for (let i = 0; i < 3; i++) for (let j = 0; j < 3; j++) if (grid[startRow + i][startCol + j] === num) return false;
+    for (let i = 0; i < 3; i++){
+      for (let j = 0; j < 3; j++){
+        if (grid[startRow + i][startCol + j] === num){
+          return false;
+        }
+      }
+    }   
     return true;
   }  
 }
