@@ -43,7 +43,7 @@ export class Solver {
     let diff = 'Hard';
     if (givens >= 31) diff = 'Easy';
     else if (givens >= 27) diff = 'Medium';
-    else if (givens <= 24) diff = 'Samurai';
+    else if (givens <= 24 && stats.steps >= 1000) diff = 'Samurai';
 
     this.solutionGrid = solutions[0];
     this.result.set({

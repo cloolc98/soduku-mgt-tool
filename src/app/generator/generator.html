@@ -1,5 +1,12 @@
 <section class="p-4 bg-gray-50 rounded-lg border border-gray-200">
     <h2 class="font-bold text-lg mb-2 text-purple-700">Generator</h2>
+
+    @if (error()) {
+        <div class="mb-3 p-2 bg-red-50 border border-red-200 text-red-600 text-sm rounded">
+            {{ error() }}
+        </div>
+    }
+
     <div class="flex items-center gap-2 mb-3">
         <label class="text-sm font-medium">Difficulty:</label>
         <select class="border rounded p-1 text-sm bg-white" (change)="difficulty.set($any($event.target).value)">
